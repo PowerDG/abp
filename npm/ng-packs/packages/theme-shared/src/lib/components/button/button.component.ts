@@ -1,9 +1,17 @@
-import { Component, EventEmitter, Input, Output, ViewChild, ElementRef, Renderer2, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+  OnInit,
+} from '@angular/core';
 import { ABP } from '@abp/ng.core';
 
 @Component({
   selector: 'abp-button',
-  // tslint:disable-next-line: component-max-inline-declarations
   template: `
     <button
       #button
@@ -11,9 +19,9 @@ import { ABP } from '@abp/ng.core';
       [attr.type]="buttonType"
       [ngClass]="buttonClass"
       [disabled]="loading || disabled"
-      (click)="onClick($event)"
-      (focus)="onFocus($event)"
-      (blur)="onBlur($event)"
+      (click.stop)="click.next($event); abpClick.next($event)"
+      (focus)="focus.next($event); abpFocus.next($event)"
+      (blur)="blur.next($event); abpBlur.next($event)"
     >
       <i [ngClass]="icon" class="mr-1"></i><ng-content></ng-content>
     </button>
@@ -41,14 +49,29 @@ export class ButtonComponent implements OnInit {
   @Input()
   attributes: ABP.Dictionary<string>;
 
-  // tslint:disable-next-line: no-output-native
+  // tslint:disable
+  /**
+   * @deprecated use abpClick instead
+   */
   @Output() readonly click = new EventEmitter<MouseEvent>();
 
+  /**
+   * @deprecated use abpFocus instead
+   */
   // tslint:disable-next-line: no-output-native
   @Output() readonly focus = new EventEmitter<FocusEvent>();
 
-  // tslint:disable-next-line: no-output-native
+  /**
+   * @deprecated use abpBlur instead
+   */
   @Output() readonly blur = new EventEmitter<FocusEvent>();
+  // tslint:enable
+
+  @Output() readonly abpClick = new EventEmitter<MouseEvent>();
+
+  @Output() readonly abpFocus = new EventEmitter<FocusEvent>();
+
+  @Output() readonly abpBlur = new EventEmitter<FocusEvent>();
 
   @ViewChild('button', { static: true })
   buttonRef: ElementRef<HTMLButtonElement>;
@@ -65,20 +88,5 @@ export class ButtonComponent implements OnInit {
         this.renderer.setAttribute(this.buttonRef.nativeElement, key, this.attributes[key]);
       });
     }
-  }
-
-  onClick(event: MouseEvent) {
-    event.stopPropagation();
-    this.click.next(event);
-  }
-
-  onFocus(event: FocusEvent) {
-    event.stopPropagation();
-    this.focus.next(event);
-  }
-
-  onBlur(event: FocusEvent) {
-    event.stopPropagation();
-    this.blur.next(event);
   }
 }

@@ -16,7 +16,7 @@ import { EllipsisDirective } from './directives/ellipsis.directive';
 import { ForDirective } from './directives/for.directive';
 import { FormSubmitDirective } from './directives/form-submit.directive';
 import { PermissionDirective } from './directives/permission.directive';
-import { ClickEventStopPropagationDirective } from './directives/stop-propagation.directive';
+import { StopPropagationDirective } from './directives/stop-propagation.directive';
 import { VisibilityDirective } from './directives/visibility.directive';
 import { ApiInterceptor } from './interceptors/api.interceptor';
 import { ABP } from './models/common';
@@ -28,6 +28,7 @@ import { ConfigState } from './states/config.state';
 import { ProfileState } from './states/profile.state';
 import { SessionState } from './states/session.state';
 import { getInitialData, localeInitializer } from './utils/initial-utils';
+import './utils/date-extensions';
 
 @NgModule({
   imports: [
@@ -53,7 +54,7 @@ import { getInitialData, localeInitializer } from './utils/initial-utils';
     PermissionDirective,
     VisibilityDirective,
     InputEventDebounceDirective,
-    ClickEventStopPropagationDirective,
+    StopPropagationDirective,
     AbstractNgModelComponent,
   ],
   exports: [
@@ -74,7 +75,7 @@ import { getInitialData, localeInitializer } from './utils/initial-utils';
     VisibilityDirective,
     InputEventDebounceDirective,
     LocalizationPipe,
-    ClickEventStopPropagationDirective,
+    StopPropagationDirective,
     AbstractNgModelComponent,
   ],
   providers: [LocalizationPipe],
